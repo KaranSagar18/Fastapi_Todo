@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from passlib.context import CryptContext
@@ -11,6 +12,7 @@ from models import User, Task
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 pwd_context = CryptContext(
     schemes=["bcrypt"], 
@@ -108,11 +110,11 @@ def read_index(request : Request , db : Session = Depends(get_db)):
         if user:
             tasks = db.scalars(select(Task).where(Task.owner_id == user_id)).all()
 
-        return templates.TemplateResponse(
-            request= request,
-            name="index.html",
-            context={"tasks" : tasks , "user" : user}
-        )
+    return templates.TemplateResponse(
+        request= request,
+        name="index.html",
+        context={"tasks" : tasks , "user" : user}
+    )
 
 @app.post("/tasks")
 def add_task(
@@ -128,7 +130,7 @@ def add_task(
     db.commit()
     return RedirectResponse(url="/",status_code=303)
 
-@app.post('/task/{task_id}/toggle')
+@app.post('/tasks/{task_id}/toggle')
 def toggle_task(
     task_id : int,
     request : Request,
@@ -150,7 +152,7 @@ def toggle_task(
     db.commit()
     return RedirectResponse(url="/", status_code=303)
 
-@app.post("/delete/{task_id}/delete")
+@app.post("/tasks/{task_id}/delete")
 def delete_task(
     task_id : int,
     request : Request,
@@ -170,7 +172,7 @@ def delete_task(
     db.commit()
     return RedirectResponse(url="/", status_code=303)
 
-@app.post("/update/{task_id}/update")
+@app.post("/tasks/{task_id}/update")
 def update_task(
     task_id : int,
     request : Request,

@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+  }
+
+body {
+font-family: 'Inter', sans-serif;
+background: #f3f3ff;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+margin: 0;
+}
+
+.add-task-form {
+background: #fff;
+padding: 30px;
+border-radius: 20px;
+box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+width: 100%;
+max-width: 400px;
+}
+
+.add-task-form h2 {
+text-align: center;
+color: #A020F0;
+margin: 0 0 20px;
+}
+
+.add-task-form input {
+display: block;
+width: 100%;
+padding: 12px 15px;
+margin: 10px 0;
+border-radius: 12px;
+border: 1px solid #A020F0;
+outline: none;
+font-size: 1rem;
+}
+
+.add-task-form button {
+display: block;
+width: 100%;
+background: #A020F0;
+color: #fff;
+padding: 12px;
+font-weight: 600;
+border: none;
+border-radius: 50px;
+margin-top: 15px;
+cursor: pointer;
+transition: transform 0.2s ease;
+}
+
+.add-task-form button:hover {
+transform: scale(1.05);
+}
